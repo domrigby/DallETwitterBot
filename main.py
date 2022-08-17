@@ -10,11 +10,6 @@ from imageEdditting import EditImage
         
 def logIn():
 
-    api_key = "N1u5g4S1fsOACYRiubkhgarCR"
-    api_secrets = "qFEsASRNsaPwMSANhahUaZWAEHy8XSlB5xF6FwFCQ7X7aDJkBw"
-    access_token = "1559490515183304708-Zl4bXJM4SiK6dzH4H6HswvjaTyHPkE"
-    access_secret = "FPREilxkO4OxlaI25cpiQrsbjW1wmmdQoGE6eWAj2gMJG"
-
     # bearer token : AAAAAAAAAAAAAAAAAAAAABMbgAEAAAAAIFpx3hZMabSHOWOAteIfAg9cWWY%3DUdGSjBvQyp2RBeg1owlU4VOd7n4vSDEpfM3vzVsqKPWuK6MMGN
     
     # Authenticate to Twitter

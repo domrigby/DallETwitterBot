@@ -4,6 +4,8 @@ import datetime
 import time
 
 from tweetHandler import NewKanyeTweet, GeneralTwitter
+from makeImage import ImageMaker
+from imageEdditting import EditImage
 
         
 def logIn():
@@ -32,14 +34,23 @@ def logIn():
 
 def main(account):
     check = GeneralTwitter(account)
-    check.getMentions()
-    check.retrieveMentionedTweet()
-    twitter = NewKanyeTweet(account)
+    mentionsTweets = check.retrieveMentionedTweet()
+    if len(mentionsTweets) > 0:
+        for element in mentionsTweets:
+            tweet = element[0]
+            image = ImageMaker(tweet._json['text'])
+            newImage = EditImage(image.tag) # im learning to use multiple files
+            newImage.crop()
+            check.sendReplyTweetwithImage(image.tag,image.text,element[1])
+            image.deleteImage()
+    else:
+        print("No new tweets")
+        pass
 
 if __name__ == "__main__":
     global account
     account = logIn()
     while True:
         main(account)
-        time.sleep(500)
+        time.sleep(15)
     

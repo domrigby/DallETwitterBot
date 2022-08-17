@@ -18,29 +18,45 @@ class GeneralTwitter():
 
         self.accountName = self.account
 
-        self.mentionsList = []
         self.storageName = "previous_mentions.pkl"
-        self.mentionsText = []
+        self.taggedTweets = []
 
     def sendTweet(self,tweet):
-        self.account.update_status(NewTweet)
-
-    def getMentions(self):
-        self.mentions = self.account.mentions_timeline()
-
-        #for mention in self.mentions:
-            #self.mentionsList.append(mention._json['text'])
+        self.account.update_status(tweet)
+            
         
     def retrieveMentionedTweet(self):
+        self.mentions = self.account.mentions_timeline()
+        self.taggedTweets = []
+
+        with open(self.storageName, 'rb') as pickle_file:
+            alreadyDone = pickle.load(pickle_file)
+
         for status in self.mentions:
             try:
-                tweet = self.account.get_status(status._json['in_reply_to_status_id'])
-                tweetText = tweet._json['text']
+                tweet = self.account.get_status(status._json['in_reply_to_status_id']) # object for tweet being replied to
+                tweet_ID = status._json['id'] # id off tweet with tag
+                if tweet_ID not in alreadyDone: # check we havent already replied to this tweet
+                    self.taggedTweets.append([tweet,status._json["id"]]) # return an array of the tweet object to make an image, along with the id to reply to
+                    alreadyDone.append(tweet_ID)
             except :
                 pass
-            self.mentionsText.append(tweetText)
 
-        return self.mentionsText
+        with open(self.storageName,"wb") as f:
+            pickle.dump(alreadyDone,f)
+            print(alreadyDone)
+
+        return self.taggedTweets
+
+
+    def sendReplyTweetwithImage(self,imageLocation,status,id):
+
+        print(imageLocation)
+
+        ret = self.account.media_upload(imageLocation)
+
+        # Attach returned media id to a tweet
+        self.account.update_status(media_ids=[ret.media_id_string], status=status, in_reply_to_status_id = id , auto_populate_reply_metadata=True)
 
 
 class NewKanyeTweet(GeneralTwitter):
@@ -54,8 +70,6 @@ class NewKanyeTweet(GeneralTwitter):
         self.generateLyric()
 
         createImage = ImageMaker(self.lyric)
-
-        #img = Image.open(f"~/Downloads/{createImage.fileName}")
 
         image = EditImage(createImage.tag) # im learning to use multiple files
         image.crop()

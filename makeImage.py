@@ -21,15 +21,20 @@ class ImageMaker():
 
         self.createImage()
         self.waitForImage()
-        self.findImage()
+        #self.findImage()
 
-        #self.driver.close()
+        self.driver.close()
 
     def createImage(self):
 
         self.driver = webdriver.Firefox(executable_path="./selenium_firefox/drivers/geckodriver")
 
         self.driver.get("https://www.craiyon.com/")
+
+        self.driver.maximize_window()
+
+        self.driver.execute_script("window.scrollTo(0, 350)") 
+
 
         ## must wait for privacy warning
 
@@ -48,6 +53,8 @@ class ImageMaker():
 
         self.text_enter = self.driver.find_element(By.ID,"prompt")
 
+        print(self.text)
+
         self.text_enter.send_keys(self.text)
 
         self.text_enter.send_keys(Keys.RETURN)
@@ -64,24 +71,12 @@ class ImageMaker():
             print(e)
             self.driver.quit()
 
-        self.driver.find_element(By.XPATH,"(//button[contains(@class,'m-2 inline-flex')])[1]").click()
-        print("Image download started")
-        time.sleep(10)
+        #self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/div[1]/main[1]/div[3]/div[1]/button[1]/span[1]").click() 
+        #print("Image download started")
 
-    def findImage(self):
-        downloadsFiles = os.listdir("/home/dom/Downloads")
-
-        tag = self.text.replace(" ","_")
-
-        for file in downloadsFiles:
-            if tag in file:
-                self.fileName = file
-            else:
-                pass
-        
-        if not hasattr(self,"fileName"):
-            print("file not found")
-
+        self.tag = self.text.replace(" ","_")
+        self.tag = "images_generated/"+self.tag+".png"
+        self.driver.save_screenshot(self.tag)
         
 
 

@@ -5,6 +5,7 @@ import os
 from PIL import Image
 
 from makeImage import ImageMaker
+from imageEdditting import EditImage
 
 class Tweet():
 
@@ -13,13 +14,15 @@ class Tweet():
         self.lyric : str
 
         self.generateLyric()
-        self.checkLyric()
 
         createImage = ImageMaker(self.lyric)
 
         #img = Image.open(f"~/Downloads/{createImage.fileName}")
 
-        ret = self.account.media_upload(f"home/dom/Downloads/{createImage.fileName}")
+        image = EditImage(createImage.tag) # im learning to use multiple files
+        image.crop()
+
+        ret = self.account.media_upload(createImage.tag)
 
         # Attach returned media id to a tweet
         self.account.update_status(media_ids=[ret.media_id_string], status=self.lyric)
@@ -32,25 +35,24 @@ class Tweet():
             x = random.randint(0,N)
             self.lyric= lines[x]
             print(self.lyric)
+            self.checkLyric()
 
     def checkLyric(self):
-        badWords = ["nig","Nig"] # filter out strings with this in
+        badWords = ["nig","Nig","bitch","Bitch"] # filter out strings with this in
         for word in badWords:
             if word in self.lyric:
                 print("Lyric rejected")
                 self.generateLyric()
-        if self.lyric[0] == "[" or "\n" :
+        if self.lyric[0] == "[" or len(self.lyric) < 10:
             self.generateLyric()
+
 
     def sendTweet(self):
         self.account.update_status(self.lyric)
 
         
 def logIn():
-    api_key = "QVpQ8gMTgizHl2xp3JpgIuYSo"
-    api_secrets = "FAOVJk7LUjBamPFZHBZwegFUfZ2lGLNsXzd3KxD2n4cmlLIMeT"
-    access_token = "1559490515183304708-Kh0ZzwRcb9U8ckAsL3Jm1UZfg0b4wO"
-    access_secret = "j8fviSDwgLsOc84Q4cKOtOGgDNl20giCYWA7cX29DeNth"
+    # log in here
 
     # bearer token : AAAAAAAAAAAAAAAAAAAAABMbgAEAAAAAIFpx3hZMabSHOWOAteIfAg9cWWY%3DUdGSjBvQyp2RBeg1owlU4VOd7n4vSDEpfM3vzVsqKPWuK6MMGN
     

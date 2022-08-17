@@ -1,3 +1,4 @@
+from pickle import FALSE
 import tweepy
 import random
 import os
@@ -7,6 +8,8 @@ from PIL import Image
 from makeImage import ImageMaker
 from imageEdditting import EditImage
 
+import datetime
+import time
 class Tweet():
 
     def __init__(self,account):
@@ -26,6 +29,8 @@ class Tweet():
 
         # Attach returned media id to a tweet
         self.account.update_status(media_ids=[ret.media_id_string], status=self.lyric)
+
+        createImage.deleteImage() # save space
 
 
     def generateLyric(self):
@@ -52,7 +57,6 @@ class Tweet():
 
         
 def logIn():
-    # log in here
 
     # bearer token : AAAAAAAAAAAAAAAAAAAAABMbgAEAAAAAIFpx3hZMabSHOWOAteIfAg9cWWY%3DUdGSjBvQyp2RBeg1owlU4VOd7n4vSDEpfM3vzVsqKPWuK6MMGN
     
@@ -77,4 +81,7 @@ def main(account):
 if __name__ == "__main__":
     global account
     account = logIn()
-    main(account)
+    while True:
+        main(account)
+        time.sleep(500)
+    

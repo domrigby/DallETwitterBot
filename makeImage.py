@@ -77,6 +77,14 @@ class ImageMaker():
         self.tag = self.text.replace(" ","_")
         self.tag = "images_generated/"+self.tag+".png"
         self.driver.save_screenshot(self.tag)
+
+    def deleteImage(self):
+        file_path = self.tag
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            print("File has been deleted")
+        else:
+            print("File does not exist")
         
 
 

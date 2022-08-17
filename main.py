@@ -1,62 +1,17 @@
-from pickle import FALSE
 import tweepy
-import random
-import os
-
-from PIL import Image
-
-from makeImage import ImageMaker
-from imageEdditting import EditImage
 
 import datetime
 import time
-class Tweet():
 
-    def __init__(self,account):
-        self.account = account # this object contains the account adn all its functions sucha as tweeting
-        self.lyric : str
-
-        self.generateLyric()
-
-        createImage = ImageMaker(self.lyric)
-
-        #img = Image.open(f"~/Downloads/{createImage.fileName}")
-
-        image = EditImage(createImage.tag) # im learning to use multiple files
-        image.crop()
-
-        ret = self.account.media_upload(createImage.tag)
-
-        # Attach returned media id to a tweet
-        self.account.update_status(media_ids=[ret.media_id_string], status=self.lyric)
-
-        createImage.deleteImage() # save space
-
-
-    def generateLyric(self):
-        with open("Kanye_West_Lyrics.txt","r") as file:
-            lines = file.readlines()
-            N = len(lines)
-            x = random.randint(0,N)
-            self.lyric= lines[x]
-            print(self.lyric)
-            self.checkLyric()
-
-    def checkLyric(self):
-        badWords = ["nig","Nig","bitch","Bitch"] # filter out strings with this in
-        for word in badWords:
-            if word in self.lyric:
-                print("Lyric rejected")
-                self.generateLyric()
-        if self.lyric[0] == "[" or len(self.lyric) < 10:
-            self.generateLyric()
-
-
-    def sendTweet(self):
-        self.account.update_status(self.lyric)
+from tweetHandler import NewKanyeTweet, GeneralTwitter
 
         
 def logIn():
+
+    api_key = "N1u5g4S1fsOACYRiubkhgarCR"
+    api_secrets = "qFEsASRNsaPwMSANhahUaZWAEHy8XSlB5xF6FwFCQ7X7aDJkBw"
+    access_token = "1559490515183304708-Zl4bXJM4SiK6dzH4H6HswvjaTyHPkE"
+    access_secret = "FPREilxkO4OxlaI25cpiQrsbjW1wmmdQoGE6eWAj2gMJG"
 
     # bearer token : AAAAAAAAAAAAAAAAAAAAABMbgAEAAAAAIFpx3hZMabSHOWOAteIfAg9cWWY%3DUdGSjBvQyp2RBeg1owlU4VOd7n4vSDEpfM3vzVsqKPWuK6MMGN
     
@@ -76,7 +31,10 @@ def logIn():
     return api
 
 def main(account):
-    tweet = Tweet(account)
+    check = GeneralTwitter(account)
+    check.getMentions()
+    check.retrieveMentionedTweet()
+    twitter = NewKanyeTweet(account)
 
 if __name__ == "__main__":
     global account

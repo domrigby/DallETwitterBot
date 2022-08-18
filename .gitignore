@@ -1,2 +1,1 @@
-git rm --cached signInDetails.txt
-rm 'signInDetails.txt'
+signInDetails.txt

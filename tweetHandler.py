@@ -25,11 +25,11 @@ class GeneralTwitter():
         self.account.update_status(tweet)
             
         
-    def retrieveMentionedTweet(self):
+    def retrieveNewMentionedTweet(self):
         self.mentions = self.account.mentions_timeline()
         self.taggedTweets = []
 
-        with open(self.storageName, 'rb') as pickle_file:
+        with open(self.storageName, 'rb') as pickle_file: # pickle file of all previously mentioned tweet IDs
             alreadyDone = pickle.load(pickle_file)
 
         for status in self.mentions:
@@ -47,7 +47,11 @@ class GeneralTwitter():
             print(alreadyDone)
 
         return self.taggedTweets
-
+        
+    def retrieveAllMentioned(self):
+        with open(self.storageName, 'rb') as pickle_file:
+            alreadyDone = pickle.load(pickle_file)
+        return alreadyDone
 
     def sendReplyTweetwithImage(self,imageLocation,status,id):
 
@@ -76,7 +80,6 @@ class NewKanyeTweet(GeneralTwitter):
 
         ret = self.account.media_upload(createImage.tag)
 
-        # Attach returned media id to a tweet
         self.account.update_status(media_ids=[ret.media_id_string], status=self.lyric)
 
         createImage.deleteImage() # save space

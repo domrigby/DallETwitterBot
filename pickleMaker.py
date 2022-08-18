@@ -1,9 +1,8 @@
 import pickle
 
-list = ["Test"]
+title = 'Kanye_West_Lyrics.txt'
 
-filename = "previous_mentions.pkl"
-
-with open(filename,'wb') as file:
-    pickle.dump(list, file)
-file.close() 
+with open(title,"rb") as f:
+    lines = f.readlines()
+    with open("Kanye_West_Lyrics.pkl","wb") as pickledF:
+        pickle.dump(lines,pickledF)

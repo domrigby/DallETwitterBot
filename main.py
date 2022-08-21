@@ -5,20 +5,23 @@ import time
 
 from tweetHandler import NewKanyeTweet, GeneralTwitter
 from makeImage import ImageMaker
-from imageEdditting import EditImage
+from imageCode.imageEditting import EditImage
+
+import pickle
 
         
 def logIn():
 
-    with open("signInDetails.txt","r") as file:
-        keys = file.readlines()
+    with open("signInDetails.pkl","rb") as file:
+        keys = pickle.load(file)
+        print(keys["api_key"])
 
     # Create a file of the sign in details, and then add it to the .gitignore file so that your credentials will not be pushed to GitHub
 
-    api_key = keys[0]
-    api_secrets = keys[1]
-    access_token = keys[2]
-    access_secret = keys[3]
+    api_key = keys["api_key"]
+    api_secrets = keys["api_secret_key"]
+    access_token = keys["access_token"]
+    access_secret = keys["access_secret"]
     
     # Authenticate to Twitter
     auth = tweepy.OAuthHandler(api_key,api_secrets)

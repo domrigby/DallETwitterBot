@@ -5,7 +5,7 @@ import time
 
 from tweetHandler import NewKanyeTweet, GeneralTwitter
 from makeImage import ImageMaker
-from imageCode.imageEditting import EditImage
+from imageEdditting import EditImage
 
 import pickle
 
@@ -58,5 +58,5 @@ if __name__ == "__main__":
     account = logIn()
     while True:
         main(account)
-        time.sleep(600) # check for new mentions every ten minutes
+        time.sleep(300) # check for new mentions every ten minutes
     

@@ -1,3 +1,4 @@
 .vscode
-signInDetails.txt
+signInDetails.pkl
 geckodriver.log
+pickleMaker.py

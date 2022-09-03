@@ -1,2 +1,4 @@
-git rm --cached signInDetails.txt
-rm 'signInDetails.txt'
+.vscode
+signInDetails.pkl
+geckodriver.log
+pickleMaker.py

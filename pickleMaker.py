@@ -1,8 +1,9 @@
 import pickle
 
-title = 'Kanye_West_Lyrics.txt'
+title = 'signInDetails.pkl'
 
-with open(title,"rb") as f:
-    lines = f.readlines()
-    with open("Kanye_West_Lyrics.pkl","wb") as pickledF:
-        pickle.dump(lines,pickledF)
+logIn = {"api_key":"", "api_secret_key":"",
+"access_token":"", "access_secret":""}
+
+with open(title,"wb") as pickledF:
+    pickle.dump(logIn,pickledF)
